@@ -13,7 +13,9 @@ namespace Client
         {
             //Regiest();
             //能者多劳模式.Go();
-            C_交换机.订阅模式();
+            //C_交换机.订阅模式();
+            //C_交换机.路由模式();
+            C_交换机.通配符模式();
         }
 
         public static void Regiest()
@@ -52,7 +54,7 @@ namespace Client
                     {
                         byte[] message = ea.Body;//接收到的消息
                         int.TryParse(Encoding.UTF8.GetString(message), out int num);
-                        if (num==8)
+                        if (num == 8)
                         {
                             Thread.Sleep(5000);
                         }

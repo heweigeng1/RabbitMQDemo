@@ -10,8 +10,8 @@ namespace Publish
         {
             //Regiest();
             //P_交换机.订阅发布模式();
-            P_交换机.路由模式();
-
+            //P_交换机.路由模式();
+            P_交换机.通配符模式();
         }
 
         public static void Regiest()

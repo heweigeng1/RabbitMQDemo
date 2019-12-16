@@ -96,5 +96,48 @@ namespace Publish
                 }
             }
         }
+
+        public static void 通配符模式()
+        {
+            Console.WriteLine("Exchange Start");
+            Console.WriteLine("host:");
+            var host = Console.ReadLine();
+            Console.WriteLine("port:");
+            var portstr = Console.ReadLine();
+            int.TryParse(portstr, out int port);
+            IConnectionFactory conFactory = new ConnectionFactory//创建连接工厂对象
+            {
+                HostName = host,//IP地址
+                Port = port,//端口号
+                UserName = "admin",//用户账号
+                Password = "admin"//用户密码
+            };
+            Console.WriteLine("exchange name");
+            string exchangeName = Console.ReadLine();
+            Console.WriteLine("fanout_订阅发布,direct_路由模式,topic_通配符模式");
+            string type = "topic";
+            Console.WriteLine("routingKey name:");
+            string routingKey = Console.ReadLine();
+            using (IConnection con = conFactory.CreateConnection())//创建连接对象
+            {
+                using (IModel channel = con.CreateModel())//创建连接会话对象
+                {
+                    //声明一个队列
+                    channel.ExchangeDeclare(
+                      exchange: exchangeName,//消息队列名称
+                      type: type);
+                    while (true)
+                    {
+                        Console.WriteLine("消息内容:");
+                        String message = Console.ReadLine();
+                        //消息内容
+                        byte[] body = Encoding.UTF8.GetBytes(message);
+                        //发送消息
+                        channel.BasicPublish(exchange: exchangeName, routingKey: routingKey, basicProperties: null, body: body);
+                        Console.WriteLine("成功发送消息:" + message);
+                    }
+                }
+            }
+        }
     }
 }
